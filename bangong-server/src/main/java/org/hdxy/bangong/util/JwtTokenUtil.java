@@ -29,7 +29,7 @@ public class JwtTokenUtil {
                 .claim("username", userDetails.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + UntilFinal.EXPIRETOKEN * 1000))
                 .signWith(SignatureAlgorithm.HS256, UntilFinal.SECRETKEY);
-        return builder.compact();
+        return UntilFinal.TOKENHEADER+builder.compact();
     }
 
     //解析token

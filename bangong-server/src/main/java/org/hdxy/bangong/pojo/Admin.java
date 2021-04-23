@@ -48,7 +48,7 @@ public class Admin implements Serializable {
     private String address;
 
     @ApiModelProperty(value = "是否启用")
-    private Boolean enabled;
+    private int enabled;
 
     @ApiModelProperty(value = "用户名")
     private String username;

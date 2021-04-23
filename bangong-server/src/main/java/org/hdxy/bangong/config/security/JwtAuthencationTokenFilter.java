@@ -25,7 +25,7 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        //下面的请求直接放行不需要进行身份认证
         if (request.getRequestURI().startsWith("/login")
                 || request.getRequestURI().startsWith("/doc.html")
                 || request.getRequestURI().startsWith("/swagger-resources")
@@ -36,26 +36,31 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
                 || request.getRequestURI().contains("png")
                 || request.getRequestURI().contains("gif")
                 || request.getRequestURI().contains("/v2/api-docs")
-
-
         ) {
             System.out.println("JwtAuthencationTokenFilter中不进行过滤的uri----" + request.getRequestURI());
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);//放行
             return;
         }
         System.out.println("JwtAuthencationTokenFilter中进行过滤的uri----" + request.getRequestURI());
+        //获取请求头Authorization的值
         String authToken = request.getHeader(UntilFinal.TokenHandler);
+        //判断authToken不为空 且 不是空字符串 且必须以Bearer开头
         if (authToken != null || !authToken.equals("") || authToken.startsWith(UntilFinal.TOKENHEADER)) {
+            //去除掉Bearer获取真正的token
             String token = authToken.substring(UntilFinal.TOKENHEADER.length());
+            //通过token获取用户名
             String username = JwtTokenUtil.getUserNameFromToken(token);
-//            token存在 但没有登录
+            //token存在 但没有登录
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                //UserDetails获取这个用户
                 UserDetails userDetails = detailsService.loadUserByUsername(username);
+                //判断token有效期
                 if (JwtTokenUtil.validateToken(token, userDetails)) {
+                    //包装下获取到的信息 否则Security不认得
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
 //                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    //注入到Security全局中
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
                 }
             }
         }
