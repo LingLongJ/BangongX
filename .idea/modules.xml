@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/BangongX.iml" filepath="$PROJECT_DIR$/.idea/BangongX.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bangong-generator/bangong-generator.iml" filepath="$PROJECT_DIR$/bangong-generator/bangong-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bangong-server/bangong-server.iml" filepath="$PROJECT_DIR$/bangong-server/bangong-server.iml" />
+    </modules>
+  </component>
+</project>
