@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new JwtAuthencationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //        http.formLogin();
         http.authorizeRequests()
-                .antMatchers("/login", "/logout").permitAll()
+                .antMatchers("/login", "/logout","/doc.html","/swagger-resources/**","index.html","/webjars/**","/v2/**").permitAll()
+                .antMatchers("/**/**.css","/**/**.js","/**/**.jpg","/**/**.png","/**/.ico").permitAll()
                 .anyRequest().authenticated();
         //添加自定义未授权和为登录结果返回
         http.exceptionHandling()

@@ -26,6 +26,24 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        if (request.getRequestURI().startsWith("/login")
+                || request.getRequestURI().startsWith("/doc.html")
+                || request.getRequestURI().startsWith("/swagger-resources")
+                || request.getRequestURI().startsWith("/webjars")
+                || request.getRequestURI().contains("css")
+                || request.getRequestURI().contains("js")
+                || request.getRequestURI().contains("jpg")
+                || request.getRequestURI().contains("png")
+                || request.getRequestURI().contains("gif")
+                || request.getRequestURI().contains("/v2/api-docs")
+
+
+        ) {
+            System.out.println("JwtAuthencationTokenFilter中不进行过滤的uri----" + request.getRequestURI());
+            filterChain.doFilter(request, response);
+            return;
+        }
+        System.out.println("JwtAuthencationTokenFilter中进行过滤的uri----" + request.getRequestURI());
         String authToken = request.getHeader(UntilFinal.TokenHandler);
         if (authToken != null || !authToken.equals("") || authToken.startsWith(UntilFinal.TOKENHEADER)) {
             String token = authToken.substring(UntilFinal.TOKENHEADER.length());
@@ -42,6 +60,6 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-
+        return;
     }
 }

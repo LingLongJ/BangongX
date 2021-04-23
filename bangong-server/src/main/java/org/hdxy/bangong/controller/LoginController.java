@@ -49,4 +49,8 @@ public class LoginController {
     }
 
 
+    @GetMapping("hello")
+    public String a(){
+        return "aaa";
+    }
 }
